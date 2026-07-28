@@ -22,13 +22,13 @@ Let me know if you want to jump on a quick 15-minute call to pair program on it!
 
 
 async function runTest() {
-    console.log("🚀 Sending data to Claude...");
+    console.log("Sending data to Claude");
     try {
         const result = await main(fakeWorkspaceData);
-        console.log("✅ SUCCESS! Here is your AI JSON:\n");
+        console.log("SUCCESS! Here is your AI JSON:\n");
         console.log(JSON.stringify(result, null, 2));
     } catch (error) {
-        console.error("❌ FAILED:", error);
+        console.error("FAILED:", error);
     }
 }
 
