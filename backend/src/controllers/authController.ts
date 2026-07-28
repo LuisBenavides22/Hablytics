@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import prisma from "../config/prisma";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+const crypto = require('crypto');
 
 export class AuthController {
 
@@ -104,8 +105,30 @@ export class AuthController {
     async forgotPassword(req: Request, res: Response) {
 
         try {
-            
 
+            const { email } = req.body;
+
+            const user = await prisma.user.findUnique({
+                where : { email}
+            });
+
+            if (!user) {
+                return res.status(200).json({ success:true, message : "Reset Link has been sent to email"})
+            }
+
+            const resetToken = crypto.randomBytes(32).toString('hex');
+            const timer = new Date(Date.now() + 15 * 60 * 1000);
+
+            const hashedToken = await bcrypt.hash(resetToken, 10);
+
+            await prisma.user.update({
+                where : { email },
+
+                data : { 
+                    resetPasswordToken : hashedToken,
+                    resetPasswordExpire : timer
+                }
+            });
 
 
         } catch (error) {
@@ -118,6 +141,7 @@ export class AuthController {
 
         try {
 
+            
             
 
 
