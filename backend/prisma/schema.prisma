@@ -10,15 +10,17 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(uuid())
-  email         String   @unique
-  firstName     String?
-  lastName      String?
-  password  String?
-  role          String?
-  plan          plans    @default(FREE)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt // FIX 1: Added the @updatedAt attribute
+  id                  String   @id @default(uuid())
+  email               String   @unique
+  firstName           String?
+  lastName            String?
+  password            String?
+  role                String?
+  plan                plans    @default(FREE)
+  resetPasswordToken  String?  
+  resetPasswordExpire DateTime?  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt // FIX 1: Added the @updatedAt attribute
 
   // Prisma requires you to list the "Reverse Relations" here
   reports     Report[]
