@@ -20,29 +20,27 @@ model User {
   resetPasswordToken  String?  
   resetPasswordExpire DateTime?  
   createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt // FIX 1: Added the @updatedAt attribute
+  updatedAt           DateTime @updatedAt 
 
-  // Prisma requires you to list the "Reverse Relations" here
+
   reports     Report[]
   auditLogs   AuditLog[]
   connections WorkspaceConnection[]
 }
 
 model Report {
-  id                  String   @id @default(uuid()) // FIX 2: Added missing '@'
-  userId              String   // FIX 3: Removed @unique
+  id                  String   @id @default(uuid()) 
+  userId              String   
   platform            String?
   summary             String
   hiddenWins          String[]
-  growthOpportunities Json     // Added from Claude's output
-  networkingTargets   String[] // Added from Claude's output
+  growthOpportunities Json     
+  networkingTargets   String[] 
   createdAt           DateTime @default(now())
 
-  // The Senior Dev Fix: Cascade Deletion
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// The new table for your GitHub/Notion keys
 model WorkspaceConnection {
   id           String    @id @default(uuid())
   userId       String
@@ -55,25 +53,22 @@ model WorkspaceConnection {
 
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // This prevents Luis from connecting 3 different GitHub accounts to one profile
   @@unique([userId, platform])
 }
 
 model AuditLog {
   id           String   @id @default(uuid())
-  userId       String?  // Nullable! Sometimes an action is done by the system, or a failed login has no ID yet.
-  action       String   // e.g., "USER_LOGIN", "GITHUB_CONNECTED", "SCAN_GENERATED"
-  resourceType String?  // e.g., "WorkspaceConnection", "Report", "User"
-  resourceId   String?  // The specific ID of the thing that was created or changed
-  metadata     Json?    // Super powerful! Store old vs. new values, IP addresses, or browser info here.
+  userId       String?  
+  action       String   
+  resourceType String?  
+  resourceId   String?  
+  metadata     Json?    
   createdAt    DateTime @default(now())
-
-  // Relation back to the User table
 
   user         User?    @relation(fields: [userId], references: [id])
 
-  @@index([userId]) // Makes searching for a specific user's logs blazing fast
-  @@index([action]) // Makes filtering by action type very fast
+  @@index([userId]) 
+  @@index([action]) 
 }
 
 enum plans {
