@@ -36,12 +36,12 @@ export class AuthController {
                 return res.status(400).json({ error: "No code provided by GitHub" });
             }
 
-            // 2. Use native fetch instead of Axios
+            
             const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json' // Forces GitHub to return JSON instead of a weird text string
+                    'Accept': 'application/json' 
                 },
                 body: JSON.stringify({
                     client_id: process.env.GITHUB_CLIENT_ID,
@@ -50,14 +50,10 @@ export class AuthController {
                 })
             });
 
-            // Parse the JSON response
+
             const tokenData = await tokenResponse.json();
             const accessToken = tokenData.access_token;
 
-            // 3. (Mock Step) Assuming you have a user ID
-            const userId = "user_123"; 
-
-            // 4. Save to the database using your imported Prisma
             await prisma.workspaceConnection.upsert({
                 where: { userId_platform: { userId: userId, platform: "GITHUB" } },
                 update: { accessToken: accessToken },
