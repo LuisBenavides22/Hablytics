@@ -4,12 +4,15 @@ import limiter from "../middleware/rateLimiter";
 
 const router = Router();
 
-router.post('/signup', authController.signup, limiter);
+router.use(limiter);
 
-router.post('/login', authController.login, limiter);
+router.post('/signup', authController.signup);
 
-router.put('/resetpassword', authController.resetPassword, limiter);
+router.post('/login', authController.login);
 
-router.post('/forgotpassword', authController.forgotPassword, limiter);
+router.put('/resetpassword', authController.resetPassword);
+
+router.post('/forgotpassword', authController.forgotPassword);
 
 export default router;
+
