@@ -3,7 +3,8 @@ import { Request, Response, NextFunction } from 'express';
 import userRoutes from "./routes/userRoutes";
 import auditlogRoutes from "./routes/auditlogRoutes";
 import authRoutes from "./routes/authRoutes";
-import limiter from './middleware/rateLimiter';
+import workspaceRoutes from "./routes/workspaceRoutes";
+import integrationRoutes from "./routes/integrationRoutes";
 import 'dotenv/config';
 
 
@@ -13,9 +14,11 @@ const app = express();
 
 app.use(express.json());
 
-app.use('/api/users', userRoutes, limiter);
-app.use('/api/audits', auditlogRoutes, limiter);
-app.use('/api/auth', authRoutes, limiter);
+app.use('/api/users', userRoutes);
+app.use('/api/audits', auditlogRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/workspaces', workspaceRoutes);
+app.use('/api/integrations', integrationRoutes);
 
 app.use('/api/health', (req: Request, res: Response) => {
     res.status(200).json({ status: 'healthy'});

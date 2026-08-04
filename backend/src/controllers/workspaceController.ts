@@ -10,7 +10,15 @@ export class workspaceController {
 
         try {
 
-            const { username, repo , platform , workspaceID } = req.body;
+            const { username, repo, platform, workspaceID } = req.body;
+
+            if (!req.userId) {
+                return res.status(401).json({ error : "Authentication required"});
+            }
+
+            if (!platform || !workspaceID) {
+                return res.status(400).json({ error : "platform and workspaceID are required"});
+            }
 
             const connection = await prisma.workspaceConnection.findFirst({
                 where : {
@@ -20,12 +28,16 @@ export class workspaceController {
             });
 
             if (!connection || !connection.accessToken) {
-                res.status(400).json({
+                return res.status(400).json({
                     error : `You need to connect your ${platform} account first`
                 });
             }
 
-            let text = ""
+            if (connection.userId !== req.userId) {
+                return res.status(403).json({ error : "You do not have access to this connection"});
+            }
+
+            let text = "";
 
             switch(platform) {
 
@@ -34,34 +46,45 @@ export class workspaceController {
                         return res.status(400).json({ error : "Github requires a username and a repo"});
                     }
 
-                    text = await GithubService.fetchAndNormalize(connection?.accessToken ?? '', username, repo);
+                    text = await GithubService.fetchAndNormalize(connection.accessToken, username, repo);
                     break;
 
                 case "SLACK":
-                    text = await SlackService.fetchandNormalize(connection?.accessToken ?? '');
-
+                    text = (await SlackService.fetchandNormalize(connection.accessToken)) ?? "";
                     break;
 
                 case "MICROSOFT":
-
-                    break;
+                    return res.status(400).json({ error : "Microsoft integration is not available yet"});
 
                 default:
                     return res.status(400).json({ error : "Unsupported platform"});
 
             }
 
-            const aiReport = main(text);
+            const aiReport = await main(text);
 
             if (!aiReport) {
-                res.status(500).json({ error : "Failed to push data to AI server"});
+                return res.status(500).json({ error : "Failed to push data to AI server"});
             }
+
+            const report = await prisma.report.create({
+                data : {
+                    userId : req.userId,
+                    platform,
+                    summary : aiReport.summary,
+                    hiddenWins : aiReport.hidden_wins ?? [],
+                    growthOpportunities : aiReport.growth_opportunities ?? [],
+                    networkingTargets : aiReport.networking_targets ?? []
+                }
+            });
+
+            res.status(201).json({ success : true, report });
 
         } catch (error) {
             console.error("Error generating report : ", error);
             res.status(500).json({ error : "Error generating report"});
         }
-    
+
     }
 
 }
