@@ -12,16 +12,14 @@ export class AuditlogController {
                 orderBy : {
                     createdAt : "desc"
                 },
-       
+
                 include : {
                     user : true,
                 }
 
             });
 
-            if (!logs) {
-                return res.status(400).json({ error : "Error getting logs"});
-            }
+            res.status(200).json({ success:true, logs});
 
         } catch (error) {
             console.error("Error getting all logs" ,error);

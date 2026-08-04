@@ -1,4 +1,3 @@
-import { GoTrueAdminApi } from "@supabase/supabase-js";
 import prisma from "../config/prisma";
 import { Request, Response } from 'express';
 
@@ -23,10 +22,10 @@ export class UserController {
             }
 
             const user = await prisma.user.create({
-                data : { 
-                    id, 
+                data : {
+                    id,
                     firstName,
-                    lastName, 
+                    lastName,
                     email,
                     role
                 },
@@ -53,7 +52,7 @@ export class UserController {
     async deleteUser(req: Request, res: Response){
         try {
 
-            const id = req.params.email as string;
+            const id = req.params.id as string;
 
             if (!id) {
                 return res.status(400).json({ error : "User ID is required"});
@@ -62,7 +61,7 @@ export class UserController {
             const existing_user = await prisma.user.findUnique({
                 where : { id }
             });
-            
+
             if (!existing_user) {
                 return res.status(400).json({ error : "User does not exist"});
             }
@@ -73,7 +72,7 @@ export class UserController {
 
             res.status(200).json({ success: true, deleted_user});
 
-        
+
         } catch (error) {
             console.error('Error deleting user', error);
             res.status(500).json({ error : "Error deleting user"});
@@ -81,7 +80,7 @@ export class UserController {
     }
 
     async updateUser(req: Request, res: Response) {
-        
+
         try {
 
             const id = req.params.id as string;
@@ -98,16 +97,24 @@ export class UserController {
                 return res.status(404).json({ error : "User does not exist"});
             }
 
+            const { firstName, lastName, role } = req.body;
+
+            const data: { firstName?: string; lastName?: string; role?: string } = {};
+
+            if (firstName) data.firstName = firstName;
+            if (lastName) data.lastName = lastName;
+            if (role) data.role = role;
+
             const updateUser = await prisma.user.update({
                 where : { id },
 
-                data : {
-                    
-                },
+                data,
 
                 select : {
-                    name : true,
-                    email : true
+                    firstName : true,
+                    lastName : true,
+                    email : true,
+                    role : true
                 }
             });
 
@@ -123,7 +130,7 @@ export class UserController {
 
         try {
 
-            const id = req.params.email as string;
+            const id = req.params.id as string;
 
             if (!id) {
                 return res.status(400).json({ error : "User ID required"});
@@ -140,7 +147,7 @@ export class UserController {
                     plan : true,
                     createdAt : true,
                     updatedAt : true
-                } 
+                }
             });
 
             if (!user) {
@@ -160,14 +167,7 @@ export class UserController {
 
         try {
 
-            const id = req.params.email as string;
-
-            if (!id) {
-                return res.status(400).json({ error : "User ID is required"});
-            }
-
             const users = await prisma.user.findMany({
-                where : { id },
 
                 select : {
                     id : true,
@@ -179,10 +179,6 @@ export class UserController {
                     updatedAt : true
                 }
             });
-
-            if (users.length === 0) { 
-                return res.status(404).json({ error: "No users found"});
-            }
 
             res.status(200).json({ success:true, users});
 
@@ -246,12 +242,12 @@ export class UserController {
                 }
             });
 
-            if (!user) { 
+            if (!user) {
                 return res.status(400).json({ error : "User does not exist"});
             }
- 
+
             res.status(200).json({
-                 success:true, 
+                 success:true,
                 connections : user.connections
             });
 
@@ -284,7 +280,7 @@ export class UserController {
                  reports: user.reports
             });
 
-            
+
         } catch (error) {
             console.error("Error fetching user reports", error);
             res.status(500).json({ error : "Error fetching user reports"});
