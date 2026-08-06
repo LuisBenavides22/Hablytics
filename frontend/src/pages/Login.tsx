@@ -11,13 +11,12 @@ export function Login() {
 
   return (
     <AuthLayout
-      eyebrow="Welcome back"
       title="Log in to Hablytics"
       subtitle="Pick up where your last read left off."
       footer={
         <>
           No account yet?{' '}
-          <Link to="/signup" className="text-signal-400 hover:text-signal-300">
+          <Link to="/signup" className="link-accent">
             Create one
           </Link>
         </>
@@ -30,11 +29,11 @@ export function Login() {
           name="password"
           type="password"
           autoComplete="current-password"
-          placeholder="••••••••••"
+          placeholder=""
         />
 
         <div className="flex justify-end">
-          <Link to="/forgot-password" className="text-sm text-ash-400 hover:text-signal-300">
+          <Link to="/forgot-password" className="text-sm text-fg-subtle hover:text-fg">
             Forgot password?
           </Link>
         </div>

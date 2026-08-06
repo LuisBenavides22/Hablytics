@@ -3,8 +3,6 @@ import type { Platform } from '@/types'
 export interface IntegrationMeta {
   platform: Platform
   name: string
-  monogram: string
-  accent: string
   reads: string
   audience: 'college' | 'career' | 'both'
   available: boolean
@@ -14,8 +12,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
   {
     platform: 'GITHUB',
     name: 'GitHub',
-    monogram: 'GH',
-    accent: '#e6ebf5',
     reads: 'Commits, pull requests, review comments',
     audience: 'career',
     available: true,
@@ -23,8 +19,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
   {
     platform: 'SLACK',
     name: 'Slack',
-    monogram: 'SL',
-    accent: '#e01e5a',
     reads: 'Channel messages, threads, response patterns',
     audience: 'career',
     available: true,
@@ -32,8 +26,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
   {
     platform: 'NOTION',
     name: 'Notion',
-    monogram: 'NO',
-    accent: '#e6ebf5',
     reads: 'Docs, specs, meeting notes, project pages',
     audience: 'both',
     available: false,
@@ -41,8 +33,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
   {
     platform: 'MICROSOFT',
     name: 'Microsoft 365',
-    monogram: 'MS',
-    accent: '#00a4ef',
     reads: 'Outlook mail, Teams messages, Word documents',
     audience: 'career',
     available: false,
@@ -50,8 +40,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
   {
     platform: 'GOOGLE_DRIVE',
     name: 'Google Drive',
-    monogram: 'GD',
-    accent: '#34a853',
     reads: 'Docs, Sheets, Slides you authored',
     audience: 'college',
     available: false,
@@ -59,8 +47,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
   {
     platform: 'CANVAS',
     name: 'Canvas',
-    monogram: 'CV',
-    accent: '#e8342d',
     reads: 'Submitted assignments, essays, project feedback',
     audience: 'college',
     available: false,
@@ -68,8 +54,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
   {
     platform: 'GMAIL',
     name: 'Gmail',
-    monogram: 'GM',
-    accent: '#ea4335',
     reads: 'Sent mail tone, structure, follow-through',
     audience: 'both',
     available: false,
@@ -77,8 +61,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
   {
     platform: 'ZOOM',
     name: 'Zoom',
-    monogram: 'ZM',
-    accent: '#2d8cff',
     reads: 'Meeting transcripts, talk-time balance',
     audience: 'career',
     available: false,

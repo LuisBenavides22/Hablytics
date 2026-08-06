@@ -9,10 +9,8 @@ import {
   Settings,
   Menu,
   X,
-  Sparkles,
 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
-import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/cn'
 
@@ -20,14 +18,14 @@ const NAV = [
   { to: '/app', label: 'Overview', icon: LayoutDashboard, end: true },
   { to: '/app/connections', label: 'Connections', icon: Plug, end: false },
   { to: '/app/reports', label: 'Reports', icon: FileText, end: false },
-  { to: '/app/plan', label: '30-Day Plan', icon: Target, end: false },
+  { to: '/app/plan', label: '30 day plan', icon: Target, end: false },
   { to: '/app/benchmarks', label: 'Benchmarks', icon: Gauge, end: false },
   { to: '/app/settings', label: 'Settings', icon: Settings, end: false },
 ]
 
 function NavItems({ onNavigate }: { onNavigate?: () => void }) {
   return (
-    <nav className="space-y-1">
+    <nav className="space-y-0.5">
       {NAV.map(({ to, label, icon: Icon, end }) => (
         <NavLink
           key={to}
@@ -36,21 +34,19 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
           onClick={onNavigate}
           className={({ isActive }) =>
             cn(
-              'group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors',
-              isActive
-                ? 'bg-white/6 text-white'
-                : 'text-ash-400 hover:bg-white/4 hover:text-ash-100',
+              'relative flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors',
+              isActive ? 'bg-raised text-fg' : 'text-fg-subtle hover:bg-raised/60 hover:text-fg-muted',
             )
           }
         >
           {({ isActive }) => (
             <>
               {isActive && (
-                <span className="absolute top-1/2 left-0 h-5 w-0.5 -translate-y-1/2 rounded-r-full bg-linear-to-b from-signal-400 to-flux-400" />
+                <span className="absolute top-1/2 left-0 h-4 w-0.5 -translate-y-1/2 rounded-r bg-accent" />
               )}
               <Icon
-                className={cn('size-4 shrink-0', isActive ? 'text-signal-400' : 'text-ash-500')}
-                strokeWidth={1.75}
+                className={cn('size-4 shrink-0', isActive && 'text-accent')}
+                strokeWidth={1.5}
               />
               {label}
             </>
@@ -63,13 +59,12 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
 
 function PlanCard() {
   return (
-    <div className="relative overflow-hidden rounded-xl border border-white/8 bg-linear-to-br from-flux-500/12 to-signal-500/8 p-4">
-      <p className="label-mono text-flux-300">Free plan</p>
-      <p className="mt-2 text-sm leading-snug text-ash-300">
+    <div className="rounded-md border border-line p-4">
+      <p className="label-mono">Free plan</p>
+      <p className="mt-2.5 text-sm leading-snug text-fg-subtle">
         One source, one snapshot. Upgrade for weekly tracking and benchmarks.
       </p>
-      <Button size="sm" className="mt-3 w-full">
-        <Sparkles className="size-3.5" strokeWidth={2} />
+      <Button size="sm" className="mt-4 w-full">
         Upgrade
       </Button>
     </div>
@@ -80,12 +75,12 @@ export function AppShell() {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <div className="min-h-screen lg:grid lg:grid-cols-[16rem_1fr]">
-      <aside className="sticky top-0 hidden h-screen flex-col border-r border-white/6 bg-abyss/60 backdrop-blur-xl lg:flex">
-        <div className="flex h-16 items-center px-5">
+    <div className="min-h-screen lg:grid lg:grid-cols-[15rem_1fr]">
+      <aside className="sticky top-0 hidden h-screen flex-col border-r border-line lg:flex">
+        <div className="flex h-14 items-center px-5">
           <Logo to="/app" />
         </div>
-        <div className="flex-1 overflow-y-auto px-3 py-2">
+        <div className="flex-1 overflow-y-auto px-3 py-3">
           <NavItems />
         </div>
         <div className="p-3">
@@ -94,36 +89,31 @@ export function AppShell() {
       </aside>
 
       <div className="flex min-w-0 flex-col">
-        <header className="sticky top-0 z-40 flex h-16 items-center justify-between gap-4 border-b border-white/6 bg-void/70 px-4 backdrop-blur-xl sm:px-6">
+        <header className="sticky top-0 z-40 flex h-14 items-center justify-between gap-4 border-b border-line bg-void/85 px-4 backdrop-blur sm:px-6">
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="grid size-9 place-items-center rounded-lg border border-white/10 text-ash-300 lg:hidden"
+              className="grid size-8 place-items-center rounded-md border border-line text-fg-muted lg:hidden"
               aria-label="Open navigation"
             >
-              <Menu className="size-4" strokeWidth={1.75} />
+              <Menu className="size-4" strokeWidth={1.5} />
             </button>
             <div className="lg:hidden">
               <Logo to="/app" />
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Badge tone="signal" dot>
-              Idle
-            </Badge>
-            <Link
-              to="/app/settings"
-              className="grid size-9 place-items-center rounded-full border border-white/10 bg-white/5 text-xs font-medium text-ash-300 transition-colors hover:border-signal-400/40 hover:text-white"
-              aria-label="Account settings"
-            >
-              &mdash;
-            </Link>
-          </div>
+          <Link
+            to="/app/settings"
+            className="grid size-8 place-items-center rounded-full border border-line text-xs text-fg-subtle transition-colors hover:border-line-strong hover:text-fg"
+            aria-label="Account settings"
+          >
+            <span className="sr-only">Account</span>
+          </Link>
         </header>
 
-        <main className="min-w-0 flex-1 px-4 py-8 sm:px-6 lg:px-10">
+        <main className="min-w-0 flex-1 px-4 py-10 sm:px-6 lg:px-10">
           <Outlet />
         </main>
       </div>
@@ -132,23 +122,23 @@ export function AppShell() {
         <div className="fixed inset-0 z-50 lg:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-void/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-void/80"
             onClick={() => setMobileOpen(false)}
             aria-label="Close navigation"
           />
-          <div className="absolute inset-y-0 left-0 flex w-72 flex-col border-r border-white/8 bg-abyss">
-            <div className="flex h-16 items-center justify-between px-5">
+          <div className="absolute inset-y-0 left-0 flex w-64 flex-col border-r border-line bg-void">
+            <div className="flex h-14 items-center justify-between px-5">
               <Logo to="/app" />
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
-                className="grid size-9 place-items-center rounded-lg text-ash-400"
+                className="grid size-8 place-items-center rounded-md text-fg-subtle"
                 aria-label="Close navigation"
               >
-                <X className="size-4" strokeWidth={1.75} />
+                <X className="size-4" strokeWidth={1.5} />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto px-3 py-2">
+            <div className="flex-1 overflow-y-auto px-3 py-3">
               <NavItems onNavigate={() => setMobileOpen(false)} />
             </div>
             <div className="p-3">

@@ -1,4 +1,3 @@
-import { ScrollText, Trash2 } from 'lucide-react'
 import { PageHeader } from '@/components/PageHeader'
 import { Panel, PanelHeader } from '@/components/ui/Panel'
 import { EmptyState } from '@/components/ui/EmptyState'
@@ -16,35 +15,36 @@ const PLAN_COPY: Record<Plan, { name: string; price: string }> = {
   ELITE: { name: 'Benchmark', price: '$15/mo' },
 }
 
+const ROLES = ['Student', 'Software Engineer', 'Data / Analytics', 'Product', 'Design', 'Other']
+
 export function Settings() {
   const plan = PLAN_COPY[currentPlan]
 
   return (
-    <div className="mx-auto max-w-4xl">
-      <PageHeader eyebrow="Settings" title="Account" description="Your profile, plan, and record of everything Hablytics has done." />
+    <div className="mx-auto max-w-3xl">
+      <PageHeader
+        title="Account"
+        description="Your profile, plan, and record of everything Hablytics has done."
+      />
 
-      <div className="space-y-5">
-        <Panel className="hairline-top">
+      <div className="space-y-4">
+        <Panel>
           <PanelHeader label="Profile" title="Who you are" />
           <div className="space-y-5 p-5">
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="First name" name="firstName" placeholder="—" />
-              <Field label="Last name" name="lastName" placeholder="—" />
+              <Field label="First name" name="firstName" placeholder="Not set" />
+              <Field label="Last name" name="lastName" placeholder="Not set" />
             </div>
-            <Field label="Email" name="email" type="email" placeholder="—" />
+            <Field label="Email" name="email" type="email" placeholder="Not set" />
             <SelectField label="Current role" name="role" defaultValue="">
               <option value="" disabled>
                 Select a role
               </option>
-              <option value="Student" className="bg-carbon">
-                Student
-              </option>
-              <option value="Software Engineer" className="bg-carbon">
-                Software Engineer
-              </option>
-              <option value="Other" className="bg-carbon">
-                Other
-              </option>
+              {ROLES.map((r) => (
+                <option key={r} value={r} className="bg-surface">
+                  {r}
+                </option>
+              ))}
             </SelectField>
             <div className="flex justify-end">
               <Button>Save changes</Button>
@@ -56,11 +56,11 @@ export function Settings() {
           <PanelHeader label="Billing" title="Your plan" />
           <div className="flex flex-col justify-between gap-4 p-5 sm:flex-row sm:items-center">
             <div>
-              <div className="flex items-center gap-2.5">
-                <p className="text-base text-white">{plan.name}</p>
-                <Badge tone={currentPlan === 'FREE' ? 'neutral' : 'signal'}>{plan.price}</Badge>
+              <div className="flex items-center gap-3">
+                <p className="text-[0.9375rem] text-fg">{plan.name}</p>
+                <Badge>{plan.price}</Badge>
               </div>
-              <p className="mt-1.5 text-sm text-ash-400">
+              <p className="mt-2 text-sm text-fg-subtle">
                 {currentPlan === 'FREE'
                   ? 'One source and a single snapshot.'
                   : 'Weekly tracking is active.'}
@@ -73,25 +73,20 @@ export function Settings() {
         </Panel>
 
         <Panel>
-          <PanelHeader
-            label="Activity"
-            title="What Hablytics has done"
-            action={<ScrollText className="size-4 text-ash-500" strokeWidth={1.75} />}
-          />
+          <PanelHeader label="Activity" title="What Hablytics has done" />
           <div className="p-5">
             {auditLogs.length > 0 ? (
-              <ul className="divide-y divide-white/6">
+              <ul className="divide-y divide-line">
                 {auditLogs.map((log) => (
                   <li key={log.id} className="flex items-center justify-between gap-4 py-3">
-                    <span className="font-mono text-xs text-ash-200">{log.action}</span>
-                    <span className="label-mono shrink-0 text-ash-500">{log.createdAt}</span>
+                    <span className="font-mono text-xs text-fg-muted">{log.action}</span>
+                    <span className="label-mono shrink-0">{log.createdAt}</span>
                   </li>
                 ))}
               </ul>
             ) : (
               <EmptyState
                 compact
-                icon={<ScrollText className="size-5" strokeWidth={1.5} />}
                 title="No activity recorded"
                 description="Every scan, connection, and export gets logged here."
               />
@@ -99,15 +94,13 @@ export function Settings() {
           </div>
         </Panel>
 
-        <Panel className="border-red-500/20">
+        <Panel>
           <PanelHeader label="Danger zone" title="Delete your account" />
           <div className="flex flex-col justify-between gap-4 p-5 sm:flex-row sm:items-center">
-            <p className="max-w-md text-sm leading-relaxed text-ash-400">
-              Deletes your account, every report, and every connected source. This cannot be
-              undone.
+            <p className="max-w-md text-sm leading-relaxed text-fg-subtle">
+              Deletes your account, every report, and every connected source. This cannot be undone.
             </p>
             <Button variant="danger" className="shrink-0">
-              <Trash2 className="size-4" strokeWidth={1.75} />
               Delete account
             </Button>
           </div>

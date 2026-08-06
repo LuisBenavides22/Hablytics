@@ -23,13 +23,12 @@ export function Signup() {
 
   return (
     <AuthLayout
-      eyebrow="Get started"
       title="Create your account"
       subtitle="Connect one source and get your first honest read."
       footer={
         <>
           Already have an account?{' '}
-          <Link to="/login" className="text-signal-400 hover:text-signal-300">
+          <Link to="/login" className="link-accent">
             Log in
           </Link>
         </>
@@ -48,7 +47,7 @@ export function Signup() {
             Select a role
           </option>
           {ROLES.map((r) => (
-            <option key={r} value={r} className="bg-carbon">
+            <option key={r} value={r} className="bg-surface">
               {r}
             </option>
           ))}
@@ -59,7 +58,7 @@ export function Signup() {
           name="password"
           type="password"
           autoComplete="new-password"
-          placeholder="••••••••••"
+          placeholder=""
           hint="At least 8 characters, with upper, lower, a number, and a symbol."
         />
 
@@ -67,7 +66,7 @@ export function Signup() {
           Create account
         </Button>
 
-        <p className="text-center text-xs leading-relaxed text-ash-500">
+        <p className="text-center text-xs leading-relaxed text-fg-faint">
           Read-only access to whatever you connect. Disconnect any source at any time.
         </p>
       </form>

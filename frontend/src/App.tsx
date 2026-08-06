@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Backdrop } from '@/components/Backdrop'
 import { MarketingLayout } from '@/components/layout/MarketingLayout'
 import { AppShell } from '@/components/layout/AppShell'
 import { Landing } from '@/pages/Landing'
@@ -19,7 +18,6 @@ import { Settings } from '@/pages/app/Settings'
 export default function App() {
   return (
     <BrowserRouter>
-      <Backdrop />
       <Routes>
         <Route element={<MarketingLayout />}>
           <Route path="/" element={<Landing />} />

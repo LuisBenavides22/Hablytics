@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { ButtonLink } from '@/components/ui/Button'
-import { cn } from '@/lib/cn'
 
 const LINKS = [
   { to: '/#how', label: 'How it works' },
@@ -16,29 +15,22 @@ export function MarketingLayout() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 border-b border-white/6 bg-void/70 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
+      <header className="sticky top-0 z-50 border-b border-line bg-void/85 backdrop-blur">
+        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-5">
           <Logo />
 
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center gap-6 md:flex">
             {LINKS.map((l) => (
-              <a
-                key={l.to}
-                href={l.to}
-                className="rounded-lg px-3 py-2 text-sm text-ash-400 transition-colors hover:text-white"
-              >
+              <a key={l.to} href={l.to} className="text-sm text-fg-subtle transition-colors hover:text-fg">
                 {l.label}
               </a>
             ))}
           </nav>
 
-          <div className="hidden items-center gap-2 md:flex">
-            <NavLink
-              to="/login"
-              className={cn('rounded-lg px-3 py-2 text-sm text-ash-300 transition-colors hover:text-white')}
-            >
+          <div className="hidden items-center gap-4 md:flex">
+            <Link to="/login" className="text-sm text-fg-subtle transition-colors hover:text-fg">
               Log in
-            </NavLink>
+            </Link>
             <ButtonLink to="/signup" size="sm">
               Run my first scan
             </ButtonLink>
@@ -47,7 +39,7 @@ export function MarketingLayout() {
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="grid size-9 place-items-center rounded-lg border border-white/10 text-ash-300 md:hidden"
+            className="grid size-8 place-items-center rounded-md border border-line text-fg-muted md:hidden"
             aria-label="Toggle menu"
           >
             {open ? <X className="size-4" /> : <Menu className="size-4" />}
@@ -55,14 +47,14 @@ export function MarketingLayout() {
         </div>
 
         {open && (
-          <div className="border-t border-white/6 bg-abyss px-5 py-4 md:hidden">
+          <div className="border-t border-line px-5 py-4 md:hidden">
             <div className="flex flex-col gap-1">
               {LINKS.map((l) => (
                 <a
                   key={l.to}
                   href={l.to}
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm text-ash-300"
+                  className="rounded-md px-2 py-2.5 text-sm text-fg-muted"
                 >
                   {l.label}
                 </a>
@@ -84,57 +76,50 @@ export function MarketingLayout() {
         <Outlet />
       </main>
 
-      <footer className="border-t border-white/6 bg-abyss/40">
-        <div className="mx-auto max-w-6xl px-5 py-12">
+      <footer className="border-t border-line">
+        <div className="mx-auto max-w-5xl px-5 py-12">
           <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
             <div className="max-w-xs">
               <Logo />
-              <p className="mt-3 text-sm leading-relaxed text-ash-400">
-                Reads how you actually work. Tells you what's costing you the job.
+              <p className="mt-3 text-sm leading-relaxed text-fg-subtle">
+                Reads how you actually work. Tells you what is costing you the job.
               </p>
             </div>
             <div className="flex gap-14">
               <div>
-                <p className="label-mono mb-3 text-ash-500">Product</p>
+                <p className="label-mono mb-3">Product</p>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <a href="/#how" className="text-ash-400 hover:text-white">
+                    <a href="/#how" className="text-fg-subtle hover:text-fg">
                       How it works
                     </a>
                   </li>
                   <li>
-                    <a href="/#pricing" className="text-ash-400 hover:text-white">
+                    <a href="/#pricing" className="text-fg-subtle hover:text-fg">
                       Pricing
                     </a>
-                  </li>
-                  <li>
-                    <Link to="/signup" className="text-ash-400 hover:text-white">
-                      Get started
-                    </Link>
                   </li>
                 </ul>
               </div>
               <div>
-                <p className="label-mono mb-3 text-ash-500">Account</p>
+                <p className="label-mono mb-3">Account</p>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <Link to="/login" className="text-ash-400 hover:text-white">
+                    <Link to="/login" className="text-fg-subtle hover:text-fg">
                       Log in
                     </Link>
                   </li>
                   <li>
-                    <Link to="/forgot-password" className="text-ash-400 hover:text-white">
-                      Reset password
+                    <Link to="/signup" className="text-fg-subtle hover:text-fg">
+                      Sign up
                     </Link>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-          <div className="mt-10 border-t border-white/6 pt-6">
-            <p className="label-mono text-ash-500">
-              &copy; {new Date().getFullYear()} Hablytics
-            </p>
+          <div className="mt-12 border-t border-line pt-6">
+            <p className="label-mono">{new Date().getFullYear()} Hablytics</p>
           </div>
         </div>
       </footer>

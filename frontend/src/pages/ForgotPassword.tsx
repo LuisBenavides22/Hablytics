@@ -11,11 +11,10 @@ export function ForgotPassword() {
 
   return (
     <AuthLayout
-      eyebrow="Password reset"
       title="Forgot your password?"
       subtitle="Enter your email and we'll send a reset link. It expires in 15 minutes."
       footer={
-        <Link to="/login" className="text-signal-400 hover:text-signal-300">
+        <Link to="/login" className="link-accent">
           Back to log in
         </Link>
       }

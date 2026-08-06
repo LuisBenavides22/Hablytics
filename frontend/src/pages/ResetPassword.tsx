@@ -11,11 +11,10 @@ export function ResetPassword() {
 
   return (
     <AuthLayout
-      eyebrow="Password reset"
       title="Set a new password"
       subtitle="Choose something you haven't used anywhere else."
       footer={
-        <Link to="/login" className="text-signal-400 hover:text-signal-300">
+        <Link to="/login" className="link-accent">
           Back to log in
         </Link>
       }
@@ -26,7 +25,7 @@ export function ResetPassword() {
           name="newPassword"
           type="password"
           autoComplete="new-password"
-          placeholder="••••••••••"
+          placeholder=""
           hint="At least 8 characters, with upper, lower, a number, and a symbol."
         />
         <Field
@@ -34,7 +33,7 @@ export function ResetPassword() {
           name="confirmPassword"
           type="password"
           autoComplete="new-password"
-          placeholder="••••••••••"
+          placeholder=""
         />
         <Button type="submit" size="lg" className="w-full">
           Reset password

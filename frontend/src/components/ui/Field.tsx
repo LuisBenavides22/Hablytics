@@ -3,7 +3,7 @@ import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
 const control =
-  'w-full rounded-xl border border-white/10 bg-white/4 px-4 text-[0.95rem] text-white transition-colors placeholder:text-ash-500 hover:border-white/16 focus:border-signal-400/60 focus:bg-white/6 focus:outline-none'
+  'w-full rounded-md border border-line bg-surface px-3 text-sm text-fg transition-colors placeholder:text-fg-faint hover:border-line-strong focus:border-fg-faint focus:outline-none'
 
 interface FieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'className'> {
   label: string
@@ -15,11 +15,11 @@ export function Field({ label, hint, className, id, ...rest }: FieldProps) {
   const fieldId = id ?? `f-${label.toLowerCase().replace(/\s+/g, '-')}`
   return (
     <div className={cn('space-y-2', className)}>
-      <label htmlFor={fieldId} className="label-mono block text-ash-400">
+      <label htmlFor={fieldId} className="label-mono block">
         {label}
       </label>
-      <input id={fieldId} className={cn(control, 'h-11')} {...rest} />
-      {hint && <p className="text-xs text-ash-500">{hint}</p>}
+      <input id={fieldId} className={cn(control, 'h-10')} {...rest} />
+      {hint && <p className="text-xs leading-relaxed text-fg-faint">{hint}</p>}
     </div>
   )
 }
@@ -34,16 +34,16 @@ export function SelectField({ label, className, children, id, ...rest }: SelectF
   const fieldId = id ?? `s-${label.toLowerCase().replace(/\s+/g, '-')}`
   return (
     <div className={cn('space-y-2', className)}>
-      <label htmlFor={fieldId} className="label-mono block text-ash-400">
+      <label htmlFor={fieldId} className="label-mono block">
         {label}
       </label>
       <div className="relative">
-        <select id={fieldId} className={cn(control, 'h-11 appearance-none pr-10')} {...rest}>
+        <select id={fieldId} className={cn(control, 'h-10 appearance-none pr-9')} {...rest}>
           {children}
         </select>
         <ChevronDown
-          className="pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 text-ash-500"
-          strokeWidth={1.75}
+          className="pointer-events-none absolute top-1/2 right-3 size-3.5 -translate-y-1/2 text-fg-faint"
+          strokeWidth={1.5}
         />
       </div>
     </div>
