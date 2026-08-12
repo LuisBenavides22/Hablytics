@@ -1,6 +1,6 @@
 // src/test-ai.ts
 import 'dotenv/config';
-import { main } from './services/ai-service'; // Adjust this path if needed
+import { main } from './services/ai-service.js';
 
 const fakeWorkspaceData = `
 --- Slack Thread: #project-apollo ---

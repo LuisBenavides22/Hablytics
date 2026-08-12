@@ -1,4 +1,4 @@
-import { claude_client } from "../config/anthropic";
+import { claude_client } from "../config/anthropic.js";
 
 
 export const main = async (rawData : string) => {

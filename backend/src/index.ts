@@ -1,11 +1,10 @@
-import express = require('express');
-import { Request, Response, NextFunction } from 'express';
-import userRoutes from "./routes/userRoutes";
-import auditlogRoutes from "./routes/auditlogRoutes";
-import authRoutes from "./routes/authRoutes";
-import workspaceRoutes from "./routes/workspaceRoutes";
-import integrationRoutes from "./routes/integrationRoutes";
-import reportRoutes from "./routes/reportRoutes";
+import express, { Request, Response } from 'express';
+import userRoutes from "./routes/userRoutes.js";
+import auditlogRoutes from "./routes/auditlogRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+import workspaceRoutes from "./routes/workspaceRoutes.js";
+import integrationRoutes from "./routes/integrationRoutes.js";
+import reportRoutes from "./routes/reportRoutes.js";
 import 'dotenv/config';
 
 

@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import { SignUp, Login } from "../schemas/userSchemas";
+import { SignUp, Login } from "../schemas/userSchemas.js";
 
 export class AuthController {
 

@@ -1,8 +1,8 @@
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 import { Request, Response } from 'express';
-import { GithubService } from "../services/integrations/github";
-import { main } from "../services/ai-service";
-import { SlackService } from "../services/integrations/slackService";
+import { GithubService } from "../services/integrations/github.js";
+import { main } from "../services/ai-service.js";
+import { SlackService } from "../services/integrations/slackService.js";
 
 export class workspaceController {
 

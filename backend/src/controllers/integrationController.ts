@@ -1,4 +1,4 @@
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 import { Request, Response } from 'express';
 import jwt from "jsonwebtoken";
 import 'dotenv/config';

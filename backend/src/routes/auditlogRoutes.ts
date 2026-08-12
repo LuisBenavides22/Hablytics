@@ -1,7 +1,7 @@
-import { AuditlogController } from "../controllers/auditlogController";
+import { AuditlogController } from "../controllers/auditlogController.js";
 import { Router } from 'express';
-import { authenticate } from "../middleware/authentication";
-import limiter from "../middleware/rateLimiter";
+import { authenticate } from "../middleware/authentication.js";
+import limiter from "../middleware/rateLimiter.js";
 
 const router = Router();
 

@@ -1,7 +1,7 @@
 import { Router } from "express";
-import workspaceController from "../controllers/workspaceController";
-import { authenticate } from "../middleware/authentication";
-import limiter from "../middleware/rateLimiter";
+import workspaceController from "../controllers/workspaceController.js";
+import { authenticate } from "../middleware/authentication.js";
+import limiter from "../middleware/rateLimiter.js";
 
 const router = Router();
 
