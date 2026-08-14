@@ -9,8 +9,6 @@ const userController = new UserController();
 
 router.use(limiter);
 
-router.post('/createuser', userController.createUser);
-
 router.put('/updateuser/:id', authenticate, userController.updateUser);
 
 router.delete('/deleteuser/:id', authenticate, userController.deleteUser);
