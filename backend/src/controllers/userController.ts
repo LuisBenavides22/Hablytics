@@ -3,63 +3,15 @@ import { Request, Response } from 'express';
 
 export class UserController {
 
-    async createUser(req: Request, res: Response) {
-
-        try {
-
-            const { firstName, lastName, id, email, role} = req.body;
-
-            if (!id || !email || !firstName || !lastName || !role) {
-                return res.status(400).json({ error : "Missing fields"});
-            }
-
-            const existing_user = await prisma.user.findUnique({
-                where : { id }
-            });
-
-            if (existing_user) {
-                return res.status(400).json({ error : "User already exists"});
-            }
-
-            const user = await prisma.user.create({
-                data : {
-                    id,
-                    firstName,
-                    lastName,
-                    email,
-                    role
-                },
-
-                select : {
-                    id : true,
-                    firstName: true,
-                    lastName: true,
-                    email : true,
-                    role : true,
-                    createdAt : true
-                }
-            });
-
-            res.status(201).json({ success: true, user});
-
-        } catch (error) {
-            console.error('Error creating user', error);
-            res.status(500).json({ error : "Error creating user"});
-        }
-
-    }
-
     async deleteUser(req: Request, res: Response){
         try {
 
-            const id = req.params.id as string;
-
-            if (!id) {
+            if (!req.userId) {
                 return res.status(400).json({ error : "User ID is required"});
             }
 
             const existing_user = await prisma.user.findUnique({
-                where : { id }
+                where : { id: req.userId }
             });
 
             if (!existing_user) {
@@ -67,7 +19,7 @@ export class UserController {
             }
 
             const deleted_user = await prisma.user.delete({
-                where : { id }
+                where : { id: req.userId }
             });
 
             res.status(200).json({ success: true, deleted_user});
@@ -83,14 +35,12 @@ export class UserController {
 
         try {
 
-            const id = req.params.id as string;
-
-            if (!id) {
-                return res.status(400).json({ error : "User ID is required"});
+            if (!req.userId) {
+                return res.status(401).json({ error : "Authentication required"});
             }
 
             const existing_user = await prisma.user.findUnique({
-                where : { id }
+                where : { id: req.userId }
             });
 
             if (!existing_user){
@@ -106,7 +56,7 @@ export class UserController {
             if (role) data.role = role;
 
             const updateUser = await prisma.user.update({
-                where : { id },
+                where : { id: req.userId },
 
                 data,
 
@@ -130,14 +80,12 @@ export class UserController {
 
         try {
 
-            const id = req.params.id as string;
-
-            if (!id) {
-                return res.status(400).json({ error : "User ID required"});
+            if (!req.userId) {
+                return res.status(401).json({ error : "Authentication required"});
             }
 
             const user = await prisma.user.findUnique({
-                where : { id },
+                where : { id: req.userId },
 
                 select : {
                     id : true,
@@ -232,10 +180,12 @@ export class UserController {
 
         try {
 
-            const id = req.params.id as string;
+            if (!req.userId) {
+                return res.status(401).json({ error : "Authentication required"});
+            }
 
             const user = await prisma.user.findUnique({
-                where : { id },
+                where : { id: req.userId },
 
                 include : {
                     connections : true,
@@ -243,7 +193,7 @@ export class UserController {
             });
 
             if (!user) {
-                return res.status(400).json({ error : "User does not exist"});
+                return res.status(404).json({ error : "User does not exist"});
             }
 
             res.status(200).json({
@@ -261,10 +211,12 @@ export class UserController {
 
         try {
 
-            const id = req.params.id as string;
+            if (!req.userId) {
+                return res.status(401).json({ error : "Authentication required"});
+            }
 
             const user = await prisma.user.findUnique({
-                where : { id },
+                where : { id: req.userId },
 
                 include : {
                     reports : true,
@@ -272,7 +224,7 @@ export class UserController {
             });
 
             if (!user) {
-                return res.status(400).json({ error : "User does not exist"});
+                return res.status(404).json({ error : "User does not exist"});
             }
 
             res.status(200).json({

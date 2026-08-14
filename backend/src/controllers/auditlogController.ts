@@ -31,14 +31,12 @@ export class AuditlogController {
 
         try {
 
-            const id = req.params.id as string;
-
-            if (!id) {
-                return res.status(400).json({ error : "ID is required"});
+            if (!req.userId) {
+                return res.status(401).json({ error : "Authentication required"});
             }
 
             const user = await prisma.user.findUnique({
-                where : { id },
+                where : { id: req.userId },
 
                 include : {
                     auditLogs : true,
@@ -46,7 +44,7 @@ export class AuditlogController {
             });
 
             if (!user) {
-                return res.status(400).json({ error : "User does not exist"});
+                return res.status(404).json({ error : "User does not exist"});
             }
 
             res.status(200).json({ success:true, user});
@@ -96,8 +94,12 @@ export class AuditlogController {
                 return res.status(400).json({ error : "Log ID is required"});
             }
 
-            const log = await prisma.auditLog.findUnique({
-                where : { id },
+            if (!req.userId) {
+                return res.status(401).json({ error : "Authentication required"});
+            }
+
+            const log = await prisma.auditLog.findFirst({
+                where : { id, userId: req.userId },
 
                 include : {
                     user : true
