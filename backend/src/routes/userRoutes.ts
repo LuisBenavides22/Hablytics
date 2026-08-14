@@ -15,10 +15,6 @@ router.delete('/deleteuser/:id', authenticate, userController.deleteUser);
 
 router.get('/getuser/:id', authenticate, userController.getUser);
 
-router.get('/getall', authenticate, userController.getAll);
-
-router.put('/updaterole/:id', authenticate, userController.updateRole);
-
 router.get('/:id/connections', authenticate, userController.getUserConnections);
 
 router.get('/:id/reports', authenticate, userController.getUserReports);

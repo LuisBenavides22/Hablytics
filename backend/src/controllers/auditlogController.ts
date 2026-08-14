@@ -3,30 +3,6 @@ import prisma from "../config/prisma.js";
 
 export class AuditlogController {
 
-    async getAllLogs(req: Request, res: Response) {
-
-        try {
-
-            const logs = await prisma.auditLog.findMany({
-
-                orderBy : {
-                    createdAt : "desc"
-                },
-
-                include : {
-                    user : true,
-                }
-
-            });
-
-            res.status(200).json({ success:true, logs});
-
-        } catch (error) {
-            console.error("Error getting all logs" ,error);
-            res.status(500).json({ error : "Error getting all logs"});
-        }
-    }
-
     async userlogs(req: Request, res: Response) {
 
         try {
