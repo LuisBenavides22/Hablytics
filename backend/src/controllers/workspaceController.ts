@@ -16,6 +16,25 @@ export class workspaceController {
                 return res.status(401).json({ error : "Authentication required"});
             }
 
+            const user = await prisma.user.findUnique({
+                where : { id : req.userId},
+                select : { plan: true }
+            });
+
+            if (!user) {
+                return res.status(400).json({ error : "User does not exist"});
+            }
+
+            if (user.plan == "FREE") {
+                const count = await prisma.report.count({
+                    where : { userId : req.userId }
+                });
+
+                if (count >= 1) {
+                    return res.status(403).json({ error : "Upgrade to create more reports"});
+                }
+            }
+            
             if (!platform || !workspaceID) {
                 return res.status(400).json({ error : "platform and workspaceID are required"});
             }
@@ -60,6 +79,8 @@ export class workspaceController {
                     return res.status(400).json({ error : "Unsupported platform"});
 
             }
+
+
 
             const aiReport = await main(text);
 
