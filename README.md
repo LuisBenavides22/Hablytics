@@ -134,6 +134,7 @@ This project is in active development. As of now:
 - The 30 day plan and peer benchmarking features have no backend support yet.
 - Billing is not implemented yet. A plan gating middleware exists but is not attached to any route.
 - Slack integration fetches account data but does not yet read message content.
+- Caching with Redis is planned but not implemented yet.
 
 ## Scripts
 
