@@ -1,13 +1,14 @@
 import { useState } from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { ButtonLink } from '@/components/ui/Button'
+import { cn } from '@/lib/cn'
 
 const LINKS = [
-  { to: '/#how', label: 'How it works' },
-  { to: '/#sources', label: 'Sources' },
-  { to: '/#pricing', label: 'Pricing' },
+  { to: '/how-it-works', label: 'How it works' },
+  { to: '/sources', label: 'Sources' },
+  { to: '/pricing', label: 'Pricing' },
 ]
 
 export function MarketingLayout() {
@@ -21,9 +22,18 @@ export function MarketingLayout() {
 
           <nav className="hidden items-center gap-6 md:flex">
             {LINKS.map((l) => (
-              <a key={l.to} href={l.to} className="text-sm text-fg-subtle transition-colors hover:text-fg">
+              <NavLink
+                key={l.to}
+                to={l.to}
+                className={({ isActive }) =>
+                  cn(
+                    'text-sm transition-colors hover:text-fg',
+                    isActive ? 'text-fg' : 'text-fg-subtle',
+                  )
+                }
+              >
                 {l.label}
-              </a>
+              </NavLink>
             ))}
           </nav>
 
@@ -50,14 +60,19 @@ export function MarketingLayout() {
           <div className="border-t border-line px-5 py-4 md:hidden">
             <div className="flex flex-col gap-1">
               {LINKS.map((l) => (
-                <a
+                <NavLink
                   key={l.to}
-                  href={l.to}
+                  to={l.to}
                   onClick={() => setOpen(false)}
-                  className="rounded-md px-2 py-2.5 text-sm text-fg-muted"
+                  className={({ isActive }) =>
+                    cn(
+                      'rounded-md px-2 py-2.5 text-sm',
+                      isActive ? 'text-fg' : 'text-fg-muted',
+                    )
+                  }
                 >
                   {l.label}
-                </a>
+                </NavLink>
               ))}
               <div className="mt-3 grid grid-cols-2 gap-2">
                 <ButtonLink to="/login" variant="outline" size="sm">
@@ -90,14 +105,19 @@ export function MarketingLayout() {
                 <p className="label-mono mb-3">Product</p>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <a href="/#how" className="text-fg-subtle hover:text-fg">
+                    <Link to="/how-it-works" className="text-fg-subtle hover:text-fg">
                       How it works
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/#pricing" className="text-fg-subtle hover:text-fg">
+                    <Link to="/sources" className="text-fg-subtle hover:text-fg">
+                      Sources
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/pricing" className="text-fg-subtle hover:text-fg">
                       Pricing
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>

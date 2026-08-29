@@ -13,6 +13,7 @@ export function Login() {
     <AuthLayout
       title="Log in to Hablytics"
       subtitle="Pick up where your last read left off."
+      card
       footer={
         <>
           No account yet?{' '}

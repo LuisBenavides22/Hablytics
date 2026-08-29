@@ -1,7 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ScrollToTop } from '@/components/ScrollToTop'
 import { MarketingLayout } from '@/components/layout/MarketingLayout'
 import { AppShell } from '@/components/layout/AppShell'
-import { Landing } from '@/pages/Landing'
+import { Home } from '@/pages/marketing/Home'
+import { HowItWorks } from '@/pages/marketing/HowItWorks'
+import { Sources } from '@/pages/marketing/Sources'
+import { Pricing } from '@/pages/marketing/Pricing'
 import { Login } from '@/pages/Login'
 import { Signup } from '@/pages/Signup'
 import { ForgotPassword } from '@/pages/ForgotPassword'
@@ -18,9 +22,13 @@ import { Settings } from '@/pages/app/Settings'
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route element={<MarketingLayout />}>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/sources" element={<Sources />} />
+          <Route path="/pricing" element={<Pricing />} />
         </Route>
 
         <Route path="/login" element={<Login />} />
