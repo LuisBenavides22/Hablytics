@@ -5,12 +5,34 @@ import authRoutes from "./routes/authRoutes.js";
 import workspaceRoutes from "./routes/workspaceRoutes.js";
 import integrationRoutes from "./routes/integrationRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
+import cors from "cors";
 import 'dotenv/config';
 
 
 const PORT = process.env.PORT;
 
 const app = express();
+
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    'http://localhost:5173',
+].filter((o): o is string => Boolean(o));
+
+const corsOptions : cors.CorsOptions = {
+    origin : (origin, callback) => {
+
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`${origin} not allowed`));
+        }
+    },
+    credentials:true,
+    optionsSuccessStatus: 200
+};
+
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
