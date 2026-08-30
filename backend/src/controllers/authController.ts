@@ -39,6 +39,20 @@ export class AuthController {
                 }
             });
 
+            const log = await prisma.auditLog.create({
+                data : {
+                    userId : createdUser.id,
+                    action : "SIGN UP",
+                    resourceType : "USER",
+                    resourceId : createdUser.id,
+                    createdAt : new Date()
+                }
+            });
+
+            if (!log){
+                return res.status(500).json({ error : "Error creating log"});
+            }
+
             res.status(201).json({
                 success : true,
                 user: {
@@ -103,6 +117,20 @@ export class AuthController {
                 secret,
                 { expiresIn : "15m" }
             );
+
+            const log = await prisma.auditLog.create({
+                data : {
+                    userId : user.id,
+                    action : "LOGGED IN",
+                    resourceType : "USER",
+                    resourceId : user.id,
+                    createdAt : new Date()
+                }
+            });
+
+            if (!log){
+                return res.status(500).json({ error : "Error creating log"});
+            }
 
             res.status(200).json({
                 success: true,
