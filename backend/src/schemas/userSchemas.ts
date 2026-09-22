@@ -9,7 +9,13 @@ export const SignUp = z.object({
     .regex(/[a-z]/, "Must Contain 1 Lowercase Letter")
     .regex(/[A-Z]/, "Must Contain 1 Uppercase Letter")
     .regex(/[0-9]/, "Must Contain 1 Number")
+    .regex(/[^A-Za-z0-9]/, "Must contain at least one special character"),
+    confirmPassword: z.string().min(8, "Must Contain At Least 8 Letters")
+    .regex(/[a-z]/, "Must Contain 1 Lowercase Letter")
+    .regex(/[A-Z]/, "Must Contain 1 Uppercase Letter")
+    .regex(/[0-9]/, "Must Contain 1 Number")
     .regex(/[^A-Za-z0-9]/, "Must contain at least one special character")
+    
 });
 
 export const Login = z.object({
