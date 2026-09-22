@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoutes.js";
 import workspaceRoutes from "./routes/workspaceRoutes.js";
 import integrationRoutes from "./routes/integrationRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
+import analyticsRoutes from "./routes/analyticsRoutes.js";
 import cors from "cors";
 import 'dotenv/config';
 
@@ -42,6 +43,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/workspaces', workspaceRoutes);
 app.use('/api/integrations', integrationRoutes);
 app.use('/api/reports', reportRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 app.use('/api/health', (req: Request, res: Response) => {
     res.status(200).json({ status: 'healthy'});
