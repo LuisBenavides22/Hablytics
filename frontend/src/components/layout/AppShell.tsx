@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavLink, Outlet, Link } from 'react-router-dom'
+import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard,
   Plug,
@@ -9,10 +9,17 @@ import {
   Settings,
   Menu,
   X,
+  LogOut,
 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/cn'
+import { useAuth } from '@/lib/auth'
+
+function initials(first: string | null, last: string | null): string {
+  const value = `${first?.[0] ?? ''}${last?.[0] ?? ''}`.trim()
+  return value ? value.toUpperCase() : '?'
+}
 
 const NAV = [
   { to: '/app', label: 'Overview', icon: LayoutDashboard, end: true },
@@ -71,8 +78,40 @@ function PlanCard() {
   )
 }
 
+function AccountCard({ onLogout }: { onLogout: () => void }) {
+  const { user } = useAuth()
+  const name = [user?.firstName, user?.lastName].filter(Boolean).join(' ')
+
+  return (
+    <div className="mt-3 flex items-center gap-3 rounded-md border border-line p-3">
+      <div className="grid size-8 shrink-0 place-items-center rounded-full border border-line text-xs text-fg-subtle">
+        {initials(user?.firstName ?? null, user?.lastName ?? null)}
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm text-fg">{name || 'Your account'}</p>
+        <p className="truncate text-xs text-fg-subtle">{user?.email}</p>
+      </div>
+      <button
+        type="button"
+        onClick={onLogout}
+        className="grid size-8 shrink-0 place-items-center rounded-md text-fg-subtle transition-colors hover:bg-raised hover:text-fg"
+        aria-label="Log out"
+      >
+        <LogOut className="size-4" strokeWidth={1.5} />
+      </button>
+    </div>
+  )
+}
+
 export function AppShell() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const navigate = useNavigate()
+  const { user, logout } = useAuth()
+
+  function handleLogout() {
+    logout()
+    navigate('/login', { replace: true })
+  }
 
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-[15rem_1fr]">
@@ -85,6 +124,7 @@ export function AppShell() {
         </div>
         <div className="p-3">
           <PlanCard />
+          <AccountCard onLogout={handleLogout} />
         </div>
       </aside>
 
@@ -109,7 +149,8 @@ export function AppShell() {
             className="grid size-8 place-items-center rounded-full border border-line text-xs text-fg-subtle transition-colors hover:border-line-strong hover:text-fg"
             aria-label="Account settings"
           >
-            <span className="sr-only">Account</span>
+            <span className="sr-only">Account settings</span>
+            <span aria-hidden>{initials(user?.firstName ?? null, user?.lastName ?? null)}</span>
           </Link>
         </header>
 
@@ -143,6 +184,7 @@ export function AppShell() {
             </div>
             <div className="p-3">
               <PlanCard />
+              <AccountCard onLogout={handleLogout} />
             </div>
           </div>
         </div>

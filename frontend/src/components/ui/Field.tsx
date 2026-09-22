@@ -8,18 +8,28 @@ const control =
 interface FieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'className'> {
   label: string
   hint?: ReactNode
+  error?: string
   className?: string
 }
 
-export function Field({ label, hint, className, id, ...rest }: FieldProps) {
+export function Field({ label, hint, error, className, id, ...rest }: FieldProps) {
   const fieldId = id ?? `f-${label.toLowerCase().replace(/\s+/g, '-')}`
   return (
     <div className={cn('space-y-2', className)}>
       <label htmlFor={fieldId} className="label-mono block">
         {label}
       </label>
-      <input id={fieldId} className={cn(control, 'h-10')} {...rest} />
-      {hint && <p className="text-xs leading-relaxed text-fg-faint">{hint}</p>}
+      <input
+        id={fieldId}
+        className={cn(control, 'h-10', error && 'border-red-800 hover:border-red-800 focus:border-red-700')}
+        aria-invalid={error ? true : undefined}
+        {...rest}
+      />
+      {error ? (
+        <p className="text-xs leading-relaxed text-red-400">{error}</p>
+      ) : (
+        hint && <p className="text-xs leading-relaxed text-fg-faint">{hint}</p>
+      )}
     </div>
   )
 }

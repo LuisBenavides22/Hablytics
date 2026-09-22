@@ -4,6 +4,7 @@ import { EmptyState } from '@/components/ui/EmptyState'
 import { Field, SelectField } from '@/components/ui/Field'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
+import { useAuth } from '@/lib/auth'
 import type { AuditLog, Plan } from '@/types'
 
 const auditLogs: AuditLog[] = []
@@ -19,6 +20,8 @@ const ROLES = ['Student', 'Software Engineer', 'Data / Analytics', 'Product', 'D
 
 export function Settings() {
   const plan = PLAN_COPY[currentPlan]
+  const { user } = useAuth()
+  const roleOptions = user?.role && !ROLES.includes(user.role) ? [...ROLES, user.role] : ROLES
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -32,15 +35,32 @@ export function Settings() {
           <PanelHeader label="Profile" title="Who you are" />
           <div className="space-y-5 p-5">
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="First name" name="firstName" placeholder="Not set" />
-              <Field label="Last name" name="lastName" placeholder="Not set" />
+              <Field
+                label="First name"
+                name="firstName"
+                placeholder="Not set"
+                defaultValue={user?.firstName ?? ''}
+              />
+              <Field
+                label="Last name"
+                name="lastName"
+                placeholder="Not set"
+                defaultValue={user?.lastName ?? ''}
+              />
             </div>
-            <Field label="Email" name="email" type="email" placeholder="Not set" />
-            <SelectField label="Current role" name="role" defaultValue="">
+            <Field
+              label="Email"
+              name="email"
+              type="email"
+              placeholder="Not set"
+              defaultValue={user?.email ?? ''}
+              readOnly
+            />
+            <SelectField label="Current role" name="role" defaultValue={user?.role ?? ''}>
               <option value="" disabled>
                 Select a role
               </option>
-              {ROLES.map((r) => (
+              {roleOptions.map((r) => (
                 <option key={r} value={r} className="bg-surface">
                   {r}
                 </option>

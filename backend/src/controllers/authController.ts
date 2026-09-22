@@ -17,7 +17,7 @@ export class AuthController {
                 return res.status(400).json({ error : parsed.error.issues[0]?.message ?? "Invalid input"});
             }
 
-            const { firstName, lastName, email, role, password } = parsed.data;
+            const { firstName, lastName, email, role, password, confirmPassword } = parsed.data;
 
             const existing_user = await prisma.user.findUnique({
                 where : { email}
@@ -25,6 +25,10 @@ export class AuthController {
 
             if (existing_user) {
                 return res.status(400).json({ error : "User already exists "});
+            }
+
+            if (password !== confirmPassword){
+                return res.status(400).json({ error : "Passwords do not match "});
             }
 
             const hashedPassword = await bcrypt.hash(password, 10);
