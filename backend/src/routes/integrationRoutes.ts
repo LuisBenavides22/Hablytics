@@ -11,4 +11,10 @@ router.get('/github/redirect', authenticate, integrationController.githubRedirec
 
 router.get('/github/callback', integrationController.githubCallback);
 
+router.delete("/deleteConnections", authenticate, integrationController.disconnect);
+
+router.get("/", authenticate, integrationController.getConnections)
+
+
+
 export default router;

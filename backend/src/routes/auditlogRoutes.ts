@@ -10,7 +10,7 @@ const auditController = new AuditlogController();
 router.use(limiter);
 router.use(authenticate);
 
-router.get('/users/:id', auditController.userlogs);
+router.get('/logs', auditController.userlogs);
 
 router.post('/', auditController.createLog);
 

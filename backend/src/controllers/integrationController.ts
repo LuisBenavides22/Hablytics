@@ -24,7 +24,7 @@ export class IntegrationController {
 
             const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=repo&state=${encodeURIComponent(state)}`;
 
-            res.redirect(githubAuthUrl);
+            res.status(200).json({ url: githubAuthUrl });
 
         } catch (error) {
             console.error("Error redirecting to github", error);
@@ -83,11 +83,68 @@ export class IntegrationController {
                 create: { userId, platform: "GITHUB", accessToken }
             });
 
-            res.status(200).json({ success: true, message: "GitHub Connected!" });
+            res.redirect(`${process.env.FRONTEND_URL}/app/connections?connected=github`);
 
         } catch (error) {
             console.error("Github callback error", error);
             res.status(500).json({ error : "Github callback error"});
+        }
+    }
+
+    async getConnections(req: Request, res: Response) {
+
+        try {
+
+            if (!req.userId){
+                return res.status(401).json({ error : "Authentication Required"});
+            }
+
+            const connections = await prisma.workspaceConnection.findMany({
+                where : { userId : req.userId },
+                select : { id : true, platform : true, createdAt : true }
+            });
+
+            res.status(200).json({ success: true, connections});
+                
+        } catch (error) {
+            res.status(400).json({ error : "Error getting user connections"});
+            console.error("Error getting connectiions", error);
+        }
+    }
+
+    async disconnect(req: Request, res: Response) {
+
+        try {
+
+            const { connection } = req.body;
+
+            if (!req.userId) {
+                return res.status(401).json({ error : "Authentication Required"});
+            }
+
+
+            const findConnecton = await prisma.workspaceConnection.findFirst({
+                where : { userId : req.userId, platform : connection},
+            });
+
+            if (!findConnecton){
+                return res.status(400).json({ error : "Service not connected"});
+            }
+
+            const deleteConnection = await prisma.workspaceConnection.delete({
+                where : {
+                    userId_platform : {
+                        userId : req.userId,
+                        platform : connection
+                    }
+                }
+            });
+
+            res.status(200).json({ success: true, deleteConnection });
+
+        } catch (error) {
+            console.error("Error disconnecting service", error);
+            res.status(500).json({ error : "Error disconnecting service"});
         }
     }
 

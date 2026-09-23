@@ -28,7 +28,7 @@ export class GithubService {
 
             const userPrs = prs.filter(pr => pr.user?.login === username);
 
-            return this.normalizeForAi(commits, prs, username, repo);
+            return this.normalizeForAi(commits, userPrs, username, repo);
 
             
         } catch (error) {
@@ -37,12 +37,12 @@ export class GithubService {
         }
     }
 
-    private static normalizeForAi(commits: any[], prs: any[], username: string, repo: string): string {
+    private static normalizeForAi(commits: any[], userPrs: any[], username: string, repo: string): string {
         let cleanText = `GITHUB WORK BEHAVIOR REPORT\n`;
         cleanText += `User: ${username} | Repository: ${repo}\n\n`;
 
-        cleanText += `--- PULL REQUEST COMMUNICATION (${prs.length} total) ---\n`;
-        prs.forEach(pr => {
+        cleanText += `--- PULL REQUEST COMMUNICATION (${userPrs.length} total) ---\n`;
+        userPrs.forEach(pr => {
             const bodyText = pr.body ? pr.body.replace(/\n/g, " ") : "[NO DESCRIPTION PROVIDED]";
             cleanText += `Title: "${pr.title}" (Status: ${pr.state})\n`;
             cleanText += `Description: ${bodyText}\n\n`;
