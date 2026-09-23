@@ -8,6 +8,8 @@ const router = Router();
 router.use(limiter);
 router.use(authenticate);
 
-router.get("/", analyticsController.getReportAmount);
+router.get("/", analyticsController.getSummary);
+
+router.get("/by-service", analyticsController.getReportByService);
 
 export default router;
