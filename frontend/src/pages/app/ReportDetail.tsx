@@ -1,14 +1,41 @@
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
 import { Panel, PanelHeader } from '@/components/ui/Panel'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
+import { FormAlert } from '@/components/ui/FormAlert'
+import { api, ApiError } from '@/lib/api'
 import type { Report } from '@/types'
 
-const report: Report | null = null
-
 export function ReportDetail() {
+  const { id } = useParams<{ id: string }>()
+  const [report, setReport] = useState<Report | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!id) return
+    let cancelled = false
+
+    api
+      .get<{ report: Report }>(`/reports/${id}`)
+      .then((res) => {
+        if (!cancelled) setReport(res.report)
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err instanceof ApiError ? err.message : 'Could not load this report.')
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [id])
+
   return (
     <div className="mx-auto max-w-3xl">
       <Link
@@ -19,9 +46,15 @@ export function ReportDetail() {
         All reports
       </Link>
 
+      {error && (
+        <div className="mb-6">
+          <FormAlert tone="error">{error}</FormAlert>
+        </div>
+      )}
+
       <div className="mb-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-start">
         <div>
-          <h1 className="text-2xl">{report ? 'Your read' : 'Nothing to show yet'}</h1>
+          <h1 className="text-2xl">{report ? 'Your read' : loading ? 'Loading…' : 'Nothing to show yet'}</h1>
           <p className="mt-2.5 text-sm text-fg-subtle">
             {report
               ? 'Generated from the sources you connected.'
