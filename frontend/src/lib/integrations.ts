@@ -21,7 +21,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     name: 'Slack',
     reads: 'Channel messages, threads, response patterns',
     audience: 'career',
-    available: true,
+    available: false,
   },
   {
     platform: 'NOTION',

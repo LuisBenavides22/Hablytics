@@ -115,9 +115,11 @@ All routes are prefixed with `/api`. Routes marked "auth" require a `Bearer` tok
 - `GET /reports/:id`
 - `DELETE /reports/:id`
 
-**integrations**
-- `GET /integrations/github/redirect` (auth required)
+**integrations** (auth required except the callback)
+- `GET /integrations`, lists the current user's connected sources
+- `GET /integrations/github/redirect`
 - `GET /integrations/github/callback`, public, called by GitHub
+- `DELETE /integrations/deleteConnections`, disconnects a source
 
 **audits** (auth required)
 - `GET /audits/users/:id`
@@ -128,13 +130,16 @@ All routes are prefixed with `/api`. Routes marked "auth" require a `Bearer` tok
 
 This project is in active development. As of now:
 
-- Auth, GitHub OAuth, AI report generation, and report management work end to end when called directly.
-- The frontend UI is built for every planned screen but is not yet wired to the backend. There are no network calls from the frontend yet, and CORS is not configured on the backend.
-- Disconnecting a connected source is not implemented yet.
+- The GitHub flow works end to end, frontend included: connect via OAuth, list and disconnect sources, run a scan, and read the generated report.
+- The rest of the frontend UI is built for every planned screen but is not yet wired to the backend beyond the GitHub flow above (Dashboard's stat tiles still show static data).
 - The 30 day plan and peer benchmarking features have no backend support yet.
 - Billing is not implemented yet. A plan gating middleware exists but is not attached to any route.
 - Slack integration fetches account data but does not yet read message content.
 - Caching with Redis is planned but not implemented yet.
+
+## Backlog
+
+- Move the JWT off the frontend. It currently lives in `localStorage`, which is readable by any JS on the page. Switch to an httpOnly cookie set by the backend: `authController` sets the cookie on login/signup instead of returning the token in the response body, `authenticate` reads it from `req.cookies`, and new `GET /auth/me` and `POST /auth/logout` endpoints replace the frontend's local read/clear of the token. The frontend drops `localStorage` and the manual `Authorization` header in favor of `credentials: 'include'` on every request. This also lets `GET /integrations/github/redirect` go back to a plain `res.redirect` instead of returning the URL as JSON for the frontend to navigate to manually, since a same-site cookie rides along on a normal browser navigation.
 
 ## Scripts
 
