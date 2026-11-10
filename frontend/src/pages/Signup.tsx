@@ -5,6 +5,7 @@ import { AuthLayout } from '@/components/layout/AuthLayout'
 import { Field, SelectField } from '@/components/ui/Field'
 import { Button } from '@/components/ui/Button'
 import { FormAlert } from '@/components/ui/FormAlert'
+import { OAuthButtons } from '@/components/OAuthButtons'
 import { useAuth } from '@/lib/auth'
 import { ApiError } from '@/lib/api'
 
@@ -20,7 +21,14 @@ const ROLES = [
   'Other',
 ]
 
-const EMPTY = { firstName: '', lastName: '', email: '', role: '', password: '', confirmPassword: '' }
+const EMPTY = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  role: '',
+  password: '',
+  confirmPassword: '',
+}
 
 export function Signup() {
   const navigate = useNavigate()
@@ -66,8 +74,7 @@ export function Signup() {
 
   return (
     <AuthLayout
-      title="Create your account"
-      subtitle="Connect one source and get your first honest read."
+      title="Create an account"
       footer={
         <>
           Already have an account?{' '}
@@ -77,25 +84,25 @@ export function Signup() {
         </>
       }
     >
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {error && <FormAlert>{error}</FormAlert>}
 
         <div className="grid gap-4 sm:grid-cols-2">
           <Field
+            variant="filled"
             label="First name"
             name="firstName"
             autoComplete="given-name"
-            placeholder="Alex"
             required
             value={form.firstName}
             onChange={update('firstName')}
             disabled={submitting}
           />
           <Field
+            variant="filled"
             label="Last name"
             name="lastName"
             autoComplete="family-name"
-            placeholder="Rivera"
             required
             value={form.lastName}
             onChange={update('lastName')}
@@ -104,11 +111,11 @@ export function Signup() {
         </div>
 
         <Field
+          variant="filled"
           label="Email"
           name="email"
           type="email"
           autoComplete="email"
-          placeholder="you@school.edu"
           required
           value={form.email}
           onChange={update('email')}
@@ -116,6 +123,7 @@ export function Signup() {
         />
 
         <SelectField
+          variant="filled"
           label="Where you are now"
           name="role"
           required
@@ -124,7 +132,7 @@ export function Signup() {
           disabled={submitting}
         >
           <option value="" disabled>
-            Select a role
+            Where you are now
           </option>
           {ROLES.map((r) => (
             <option key={r} value={r} className="bg-surface">
@@ -134,11 +142,11 @@ export function Signup() {
         </SelectField>
 
         <Field
+          variant="filled"
           label="Password"
           name="password"
           type="password"
           autoComplete="new-password"
-          placeholder=""
           required
           minLength={8}
           value={form.password}
@@ -148,11 +156,11 @@ export function Signup() {
         />
 
         <Field
+          variant="filled"
           label="Confirm password"
           name="confirmPassword"
           type="password"
           autoComplete="new-password"
-          placeholder=""
           required
           value={form.confirmPassword}
           onChange={update('confirmPassword')}
@@ -160,14 +168,25 @@ export function Signup() {
           error={mismatch ? 'The two passwords do not match.' : undefined}
         />
 
-        <Button type="submit" size="lg" className="w-full" disabled={submitting}>
-          {submitting ? 'Creating account…' : 'Create account'}
-        </Button>
-
-        <p className="text-center text-xs leading-relaxed text-fg-faint">
-          Read-only access to whatever you connect. Disconnect any source at any time.
-        </p>
+        <div className="pt-4">
+          <Button
+            type="submit"
+            size="lg"
+            className="!h-12 w-full !rounded-lg !text-[0.9375rem]"
+            disabled={submitting}
+          >
+            {submitting ? 'Creating account…' : 'Create account'}
+          </Button>
+        </div>
       </form>
+
+      <div className="mt-8">
+        <OAuthButtons label="Or register with" disabled={submitting} />
+      </div>
+
+      <p className="mt-8 text-center text-xs leading-relaxed text-fg-faint">
+        Read-only access to whatever you connect. Disconnect any source at any time.
+      </p>
     </AuthLayout>
   )
 }

@@ -61,11 +61,11 @@ export function ResetPassword() {
         <form onSubmit={handleSubmit} className="space-y-5">
           {error && <FormAlert>{error}</FormAlert>}
           <Field
+            variant="filled"
             label="New password"
             name="newPassword"
             type="password"
             autoComplete="new-password"
-            placeholder=""
             required
             minLength={8}
             value={newPassword}
@@ -74,11 +74,11 @@ export function ResetPassword() {
             hint="At least 8 characters, with upper, lower, a number, and a symbol."
           />
           <Field
+            variant="filled"
             label="Confirm password"
             name="confirmPassword"
             type="password"
             autoComplete="new-password"
-            placeholder=""
             required
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}

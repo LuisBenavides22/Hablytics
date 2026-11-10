@@ -4,25 +4,39 @@
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
 
-  --color-void: #000000;
-  --color-surface: #0a0a0a;
-  --color-raised: #131313;
+  /* Tinted black, not #000: lets surfaces separate and cuts text halation. */
+  --color-void: #09090b;
+  --color-surface: #0f0f11;
+  --color-raised: #17171a;
 
-  --color-line: #1e1e1e;
-  --color-line-strong: #2e2e2e;
+  --color-line: rgb(255 255 255 / 8%);
+  --color-line-strong: rgb(255 255 255 / 15%);
 
-  --color-fg: #fafafa;
-  --color-fg-muted: #a1a1a1;
-  --color-fg-subtle: #6b6b6b;
-  --color-fg-faint: #454545;
+  /* Every text tier clears 4.5:1 on void. */
+  --color-fg: #f4f4f5;
+  --color-fg-muted: #a1a1aa;
+  --color-fg-subtle: #8f8f98;
+  --color-fg-faint: #7d7d86;
 
   --color-positive: #9db8a4;
-  --color-attention: #c2a878;
+  /* Muted clay, kept well away from the amber brand accent. */
+  --color-attention: #cf9f93;
 
-  /* Reserved for interactive state only: links, active nav, focus. Never decoration. */
-  --color-accent: #7aa2f7;
+  /* The brand's third color. Roughly a tenth of any screen: primary actions, links,
+     active nav, focus, the type name, Pro locks. Never body text or large fills. */
+  --color-accent: #e8a23d;
+  --color-accent-hover: #f0b359;
+  --color-accent-press: #d08f2e;
 
   --animate-rise: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  --animate-marquee: marquee 40s linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
 
   @keyframes rise {
     from {
@@ -75,6 +89,15 @@
     color: var(--color-void);
   }
 
+  /* Marketing pages hide the page scrollbar so backgrounds run edge to edge.
+     The page still scrolls; MarketingLayout sets the class. */
+  html.no-page-scrollbar {
+    scrollbar-width: none;
+  }
+  html.no-page-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -88,7 +111,7 @@
     border: 3px solid var(--color-void);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #3d3d3d;
+    background: rgb(255 255 255 / 24%);
   }
 
   :focus-visible {

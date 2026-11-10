@@ -9,7 +9,7 @@ const base =
   'inline-flex items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap transition-[background-color,border-color,color,transform] duration-150 active:scale-[0.985] disabled:pointer-events-none disabled:opacity-35 disabled:active:scale-100'
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-fg text-void hover:bg-white active:bg-[#dcdcdc]',
+  primary: 'bg-accent text-void hover:bg-accent-hover active:bg-accent-press',
   outline: 'border border-line-strong text-fg hover:border-fg-faint hover:bg-raised active:bg-line',
   ghost: 'text-fg-muted hover:bg-raised hover:text-fg active:bg-line',
   danger:
