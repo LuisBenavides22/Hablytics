@@ -5,6 +5,7 @@ import { AuthLayout } from '@/components/layout/AuthLayout'
 import { Field } from '@/components/ui/Field'
 import { Button } from '@/components/ui/Button'
 import { FormAlert } from '@/components/ui/FormAlert'
+import { OAuthButtons } from '@/components/OAuthButtons'
 import { useAuth } from '@/lib/auth'
 import { ApiError } from '@/lib/api'
 
@@ -39,9 +40,7 @@ export function Login() {
 
   return (
     <AuthLayout
-      title="Log in to Hablytics"
-      subtitle="Pick up where your last read left off."
-      card
+      title="Welcome back"
       footer={
         <>
           No account yet?{' '}
@@ -51,26 +50,26 @@ export function Login() {
         </>
       }
     >
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {error && <FormAlert>{error}</FormAlert>}
 
         <Field
+          variant="filled"
           label="Email"
           name="email"
           type="email"
           autoComplete="email"
-          placeholder="you@school.edu"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={submitting}
         />
         <Field
+          variant="filled"
           label="Password"
           name="password"
           type="password"
           autoComplete="current-password"
-          placeholder=""
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -83,10 +82,21 @@ export function Login() {
           </Link>
         </div>
 
-        <Button type="submit" size="lg" className="w-full" disabled={submitting}>
-          {submitting ? 'Logging in…' : 'Log in'}
-        </Button>
+        <div className="pt-2">
+          <Button
+            type="submit"
+            size="lg"
+            className="!h-12 w-full !rounded-lg !text-[0.9375rem]"
+            disabled={submitting}
+          >
+            {submitting ? 'Logging in…' : 'Log in'}
+          </Button>
+        </div>
       </form>
+
+      <div className="mt-8">
+        <OAuthButtons label="Or log in with" disabled={submitting} />
+      </div>
     </AuthLayout>
   )
 }

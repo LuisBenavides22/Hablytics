@@ -11,8 +11,8 @@ export function Pricing() {
     <>
       <MarketingHeader
         eyebrow="Pricing"
-        title="Start free. Upgrade when it stings."
-        lead="Run one read for nothing. Move up when you want the weekly loop and the benchmarks."
+        title="Your type is free. The full profile is Pro."
+        lead="Run one read for nothing and see what kind of worker you are. Go Pro when you want everything behind it, even if that is for a single month."
       />
 
       <section className="px-5 py-20">
@@ -21,11 +21,11 @@ export function Pricing() {
             {TIERS.map((tier) => (
               <Panel
                 key={tier.name}
-                className={cn('flex h-full flex-col p-6', tier.featured && 'border-line-strong')}
+                className={cn('flex h-full flex-col p-6', tier.featured && 'border-accent/50 bg-raised')}
               >
                 <div className="flex items-baseline justify-between">
                   <h3 className="text-base">{tier.name}</h3>
-                  {tier.featured && <span className="label-mono">Most picked</span>}
+                  {tier.featured && <span className="label-mono text-fg-muted">Full profile</span>}
                 </div>
 
                 <div className="mt-5 flex items-baseline gap-1">

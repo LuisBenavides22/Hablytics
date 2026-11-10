@@ -9,6 +9,9 @@ const MICROSOFT_SQUARES = [
   { x: 12.5, y: 12.5, fill: '#FFB900' },
 ]
 
+// Slack's mark is four colors: each pair of shapes in the path takes the next one.
+const SLACK_COLORS = ['#E01E5A', '#36C5F0', '#2EB67D', '#ECB22E']
+
 // GitHub and Notion are near-black in brand color, invisible on a black surface.
 const ON_DARK_OVERRIDE: Partial<Record<Platform, string>> = {
   GITHUB: '#f5f5f5',
@@ -33,6 +36,17 @@ export function PlatformLogo({ platform, className }: PlatformLogoProps) {
 
   const mark = BRAND_MARKS[platform]
   if (!mark) return null
+
+  if (platform === 'SLACK') {
+    const shapes = mark.path.split(/(?<=z)/).filter(Boolean)
+    return (
+      <svg viewBox="0 0 24 24" className={cn('size-5', className)} aria-hidden>
+        {shapes.map((d, i) => (
+          <path key={d} d={d} fill={SLACK_COLORS[Math.floor(i / 2)] ?? mark.hex} />
+        ))}
+      </svg>
+    )
+  }
 
   return (
     <svg viewBox="0 0 24 24" className={cn('size-5', className)} aria-hidden>

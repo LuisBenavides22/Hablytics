@@ -45,6 +45,7 @@ export function ForgotPassword() {
         <form onSubmit={handleSubmit} className="space-y-5">
           {error && <FormAlert>{error}</FormAlert>}
           <Field
+            variant="filled"
             label="Email"
             name="email"
             type="email"

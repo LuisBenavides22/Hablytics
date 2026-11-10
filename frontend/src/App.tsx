@@ -8,6 +8,7 @@ import { Home } from '@/pages/marketing/Home'
 import { HowItWorks } from '@/pages/marketing/HowItWorks'
 import { Sources } from '@/pages/marketing/Sources'
 import { Pricing } from '@/pages/marketing/Pricing'
+import { Sample } from '@/pages/marketing/Sample'
 import { Login } from '@/pages/Login'
 import { Signup } from '@/pages/Signup'
 import { ForgotPassword } from '@/pages/ForgotPassword'
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="/how-it-works" element={<HowItWorks />} />
             <Route path="/sources" element={<Sources />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/sample" element={<Sample />} />
           </Route>
 
           <Route

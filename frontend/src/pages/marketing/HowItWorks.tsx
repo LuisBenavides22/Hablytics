@@ -7,7 +7,7 @@ export function HowItWorks() {
     <>
       <MarketingHeader
         eyebrow="How it works"
-        title="Three steps between you and an honest answer"
+        title="Three steps between you and your type"
         lead="No resume parsing, no self-assessment. Hablytics reads the work itself and reports back on what it sees."
       />
 
