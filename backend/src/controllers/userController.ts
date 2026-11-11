@@ -174,6 +174,36 @@ export class UserController {
         }
     }
 
+    async getUserPlans(req: Request, res: Response){
+
+        try {
+
+            if (!req.userId){
+                return res.status(401).json({ error : "Authentication Required"});
+            }
+            
+            const plans = await prisma.plan.findMany({
+                where : { userId : req.userId },
+
+                orderBy : {
+                    createdAt : "desc"
+                }
+            });
+
+            if (!plans){
+                return res.status(404).json({ error : "No Plans Found"});
+            }
+
+            res.status(200).json({ 
+                success: true, 
+                plans
+            });
+
+        } catch (error){
+            console.error("Error getting user plans", error);
+            res.status(500).json({ error : "Error getting user plans"});
+        }
+    }
 }
 
 export default new UserController();
