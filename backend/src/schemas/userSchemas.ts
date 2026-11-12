@@ -3,6 +3,10 @@ import { z } from "zod";
 export const SignUp = z.object({
     firstName : z.string().trim().min(1, "First Name is Required"),
     lastName : z.string().trim().min(1, "Last Name is Required"),
+    phoneNumber : z.string()
+    .regex(/^\+?[1-9]\d{1,14}$/, {
+    message: "Invalid phone number. Use E.164 format (e.g., +1234567890)."
+    }),
     role: z.string().trim().min(1, "Role Required"),
     email : z.string().trim().toLowerCase().email("Invalid Email"),
     password: z.string().min(8, "Must Contain At Least 8 Letters")

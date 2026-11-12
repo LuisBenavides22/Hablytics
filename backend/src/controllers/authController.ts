@@ -4,6 +4,15 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { SignUp, Login } from "../schemas/userSchemas.js";
+import  { textMessager } from "../services/messagingService.js";
+import { verifyLoginCode } from "../services/messagingService.js";
+
+
+interface PayLoad {
+    id : string,
+    email : string,
+    role? : string
+}
 
 export class AuthController {
 
@@ -17,7 +26,7 @@ export class AuthController {
                 return res.status(400).json({ error : parsed.error.issues[0]?.message ?? "Invalid input"});
             }
 
-            const { firstName, lastName, email, role, password, confirmPassword } = parsed.data;
+            const { firstName, lastName, email, phoneNumber, role, password, confirmPassword } = parsed.data;
 
             const existing_user = await prisma.user.findUnique({
                 where : { email}
@@ -37,6 +46,7 @@ export class AuthController {
                 data : {
                     firstName,
                     lastName,
+                    phoneNumber,
                     email,
                     role,
                     password : hashedPassword
@@ -67,7 +77,6 @@ export class AuthController {
                     role: createdUser.role
                 }
             });
-
 
         } catch (error) {
             res.status(500).json({ error : "Error creating user"});
@@ -107,13 +116,28 @@ export class AuthController {
                 return res.status(500).json({ error : "Server configuration error"});
             }
 
-            const payload: { id: string; email: string; role?: string } = {
+            const payload: PayLoad = {
                 id: user.id,
                 email: user.email
             };
 
             if (user.role) {
                 payload.role = user.role;
+            }
+
+            const code = req.body.code as string;
+
+            if (!user.phoneNumber) {
+                return res.status(400).json({ error: "Phone number is required for two-factor authentication" });
+            }
+
+            if (!code){
+                await textMessager(user.phoneNumber);
+                return res.status(200).json({ requiresCode : true, message : "Code Sent to Phone Number"});
+            }
+
+            if (!verifyLoginCode(user.phoneNumber, String(code))){
+                return res.status(401).json({ error : "Two Factor Authentication Error"});
             }
 
             const token = jwt.sign(
@@ -150,8 +174,8 @@ export class AuthController {
 
 
         } catch (error) {
-            res.status(500).json({ error : "Sign Up Error"});
-            console.error("Internal Server Error during Sign Up : ",  error);
+            res.status(500).json({ error : "Login Error"});
+            console.error("Internal Server Error During Login : ",  error);
         }
 
     }
