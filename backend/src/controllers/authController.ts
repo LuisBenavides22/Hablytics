@@ -26,7 +26,7 @@ export class AuthController {
                 return res.status(400).json({ error : parsed.error.issues[0]?.message ?? "Invalid input"});
             }
 
-            const { firstName, lastName, email, phoneNumber, role, password, confirmPassword } = parsed.data;
+            const { firstName, lastName, email, role, password, confirmPassword } = parsed.data;
 
             const existing_user = await prisma.user.findUnique({
                 where : { email}
